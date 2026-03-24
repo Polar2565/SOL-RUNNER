@@ -1,136 +1,111 @@
 # SOL RUNNER
 
-SOL RUNNER es un juego web de acción tipo arena / roguelite conectado a Solana, donde el jugador inicia sesión con su wallet Phantom, firma autenticación, entra a combates por pisos y puede obtener recompensas, mejoras, skins y progresión.
+SOL RUNNER es un juego web tipo **arena roguelite** conectado con **Solana**, donde el jugador inicia sesión con su wallet **Phantom**, firma un mensaje para autenticarse, entra a runs de combate por pisos, obtiene recompensas, compra mejoras y administra una colección de skins/personajes dentro del juego.
 
-La experiencia está dividida en tres partes claras:
+El proyecto combina dos partes:
 
-- pantalla de conexión con wallet
-- menú principal del juego
-- gameplay en pantalla completa
+- una **experiencia de juego web** hecha con HTML, CSS y JavaScript
+- una **integración blockchain con Solana** para autenticación y rewards
 
-Además, el juego incluye tienda, oráculo/ruleta diaria, recompensa diaria, progresión de personaje y sistema de recompensas conectado al backend.
+La idea central es que la wallet no sea solo un login decorativo, sino una identidad real del jugador dentro del sistema.
+
+---
+
+# Tabla de contenido
+
+- [Visión general](#visión-general)
+- [Objetivo del proyecto](#objetivo-del-proyecto)
+- [Arquitectura general](#arquitectura-general)
+- [Tecnologías utilizadas](#tecnologías-utilizadas)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Flujo funcional del sistema](#flujo-funcional-del-sistema)
+- [Sistema de autenticación con Phantom](#sistema-de-autenticación-con-phantom)
+- [Sistema de juego](#sistema-de-juego)
+- [Sistema de tienda](#sistema-de-tienda)
+- [Sistema de colección y skins](#sistema-de-colección-y-skins)
+- [Parte NFT y alcance real](#parte-nft-y-alcance-real)
+- [Sistema de oráculo y recompensas diarias](#sistema-de-oráculo-y-recompensas-diarias)
+- [Sistema de rewards on-chain](#sistema-de-rewards-on-chain)
+- [Wallet del backend vs wallet del jugador](#wallet-del-backend-vs-wallet-del-jugador)
+- [Persistencia de datos](#persistencia-de-datos)
+- [Cómo instalar y ejecutar el proyecto](#cómo-instalar-y-ejecutar-el-proyecto)
+- [Cómo probar el proyecto paso a paso](#cómo-probar-el-proyecto-paso-a-paso)
+- [Variables de entorno](#variables-de-entorno)
+- [Endpoints del backend](#endpoints-del-backend)
+- [Assets y archivos visuales](#assets-y-archivos-visuales)
+- [Problemas comunes](#problemas-comunes)
+- [Estado actual del proyecto](#estado-actual-del-proyecto)
+- [Mejoras futuras](#mejoras-futuras)
+
+---
+
+# Visión general
+
+SOL RUNNER está diseñado como un juego web con identidad propia, no como un dashboard técnico disfrazado de juego.
+
+La experiencia se divide en tres estados principales:
+
+1. **Pantalla de login / conexión**  
+   El usuario conecta su wallet Phantom y firma autenticación.
+
+2. **Menú principal**  
+   Se muestran las acciones principales del juego: iniciar run, abrir tienda, abrir oráculo, reclamar rewards, revisar build y skin equipada.
+
+3. **Gameplay**  
+   Se entra a una pantalla de juego completa con canvas, HUD, enemigos, boss, progresión por piso y estadísticas del run.
+
+Además, la tienda y el oráculo se muestran como **modales**, no como páginas independientes, para mantener continuidad visual durante la experiencia.
 
 ---
 
 # Objetivo del proyecto
 
-El objetivo de SOL RUNNER es combinar una experiencia de juego sencilla pero atractiva con elementos del ecosistema Solana, incluyendo:
+El objetivo de SOL RUNNER es demostrar una integración funcional entre:
 
-- autenticación por firma con wallet Phantom
-- backend conectado a Solana
-- sistema de recompensa on-chain
-- inventario de skins y mejoras
-- colección visual de personajes
-- progresión y economía del juego
+- **experiencia de juego web**
+- **autenticación basada en wallet**
+- **recompensas conectadas a Solana**
+- **colección de personajes / skins**
+- **progresión del jugador**
 
-El proyecto busca que la parte blockchain no sea solo “decoración”, sino que tenga una función real dentro del flujo del juego.
+No se busca únicamente mostrar una conexión básica a wallet, sino construir una base donde:
 
----
-
-# Qué hace el proyecto
-
-Actualmente, SOL RUNNER permite:
-
-- conectar una wallet Phantom
-- autenticar sesión firmando un nonce
-- entrar al menú principal del juego
-- iniciar runs de combate
-- avanzar por pisos
-- derrotar enemigos y bosses
-- obtener recompensas
-- reclamar recompensas desde el backend
-- abrir tienda y oráculo como modales
-- comprar skins y mejoras
-- equipar skins compradas
-- guardar progreso local del jugador
+- la wallet sea la identidad del jugador
+- las recompensas tengan sentido dentro del sistema
+- la colección de skins pueda evolucionar a un modelo NFT real
+- el juego tenga suficiente estructura para crecer
 
 ---
 
-# Flujo general del sistema
+# Arquitectura general
 
-## 1. Conexión e inicio de sesión
+El proyecto está dividido en dos capas:
 
-El jugador entra a la pantalla inicial y conecta Phantom.  
-Después de conectarse:
+## 1. Frontend
+Se encarga de toda la experiencia visual y de juego.
 
-1. el frontend obtiene la dirección pública de la wallet
-2. el frontend pide un nonce al backend
-3. el usuario firma ese nonce con Phantom
-4. el backend verifica la firma
-5. si todo es válido, el backend devuelve una sesión autenticada
+Responsabilidades:
+- pantallas del juego
+- HUD
+- canvas y render
+- controles del jugador
+- tienda y oráculo
+- inventario local
+- lógica de runs
+- comunicación con backend
+- lectura de sesión local
 
-Con eso, el usuario ya puede usar el juego.
+## 2. Backend
+Se encarga de la autenticación, sesiones y conexión a Solana.
 
----
-
-## 2. Menú principal
-
-Una vez autenticado, el jugador entra al menú principal, donde puede:
-
-- iniciar una run
-- abrir la tienda
-- abrir el oráculo
-- revisar skin equipada
-- revisar daño y velocidad actuales
-- reclamar reward pendiente
-- cerrar sesión
-
----
-
-## 3. Gameplay
-
-Cuando el jugador inicia una run:
-
-- entra a una pantalla dedicada al juego
-- aparece el HUD superior
-- el canvas ocupa la pantalla útil
-- puede moverse con WASD o flechas
-- puede disparar con clic izquierdo
-- aparecen enemigos gradualmente
-- al cumplir el objetivo de kills, aparece el boss
-- si derrota al boss, completa el piso y genera recompensa
-
----
-
-## 4. Tienda
-
-La tienda funciona como modal y contiene tres categorías:
-
-- Personajes
-- Armas
-- Reliquias
-
-La tienda permite:
-
-- ver skins disponibles
-- distinguir entre skin no comprada, comprada o equipada
-- equipar skins ya compradas
-- comprar mejoras permanentes
-- ver colección actual del jugador
-
----
-
-## 5. Oráculo
-
-El oráculo funciona como modal y ofrece:
-
-- consulta diaria / ruleta
-- recompensa diaria
-- mejora aleatoria o pequeña recompensa
-
-Esto añade progresión ligera y rejugabilidad.
-
----
-
-## 6. Recompensas
-
-Cuando una run se completa correctamente:
-
-1. el frontend registra la run contra el backend
-2. el backend calcula la recompensa
-3. la recompensa queda pendiente
-4. el jugador la reclama manualmente
-5. el backend envía la recompensa desde la wallet del servidor hacia la wallet del jugador
+Responsabilidades:
+- generar nonce
+- verificar firma de Phantom
+- crear sesión
+- registrar runs
+- calcular rewards
+- enviar recompensas reales desde una wallet del backend
+- conectarse al RPC de Solana
 
 ---
 
@@ -138,94 +113,94 @@ Cuando una run se completa correctamente:
 
 ## Frontend
 
-El frontend está construido con tecnologías web simples para mantener control total sobre la interfaz:
+### HTML5
+Se usa para estructurar:
+- pantalla de login
+- menú principal
+- pantalla de gameplay
+- HUD
+- modales de tienda y oráculo
+- canvas del juego
 
-- **HTML5**
-- **CSS3**
-- **JavaScript Vanilla**
+### CSS3
+Se usa para:
+- diseño visual completo
+- layout fijo sin scroll en gameplay
+- responsive
+- animaciones
+- estilos del HUD
+- estilos de tienda, badges y colección
+- efectos visuales del menú y modales
 
-### ¿Para qué se usó cada una?
-
-- **HTML**: estructura de pantallas, modales, HUD, tienda, oráculo, botones y canvas
-- **CSS**: diseño visual del juego, layout, efectos visuales, responsive, animaciones y estilo general
-- **JavaScript**: lógica de navegación, gameplay, inventario, tienda, oráculo, animación del juego y conexión con backend
-
----
-
-## Backend
-
-El backend está construido para manejar autenticación, sesión y recompensas:
-
-- **Node.js**
-- **Express**
-
-### ¿Para qué se usó?
-
-- crear endpoints REST
-- verificar firmas de Phantom
-- generar y validar nonces
-- administrar sesiones
-- registrar runs
-- calcular rewards
-- enviar recompensas desde una wallet del backend
-
----
-
-## Blockchain / Solana
-
-La conexión con Solana se trabaja con:
-
-- **@solana/web3.js**
-- **Wallet Phantom**
-- **Solana Devnet** (según configuración del backend)
-
-### ¿Para qué se usó?
-
-- generar o cargar keypairs
-- conectarse al RPC de Solana
-- leer balances
-- firmar autenticación
-- transferir recompensas
-
----
-
-# Arquitectura del proyecto
-
-La arquitectura actual separa el proyecto en dos partes:
-
-## Frontend
-Se encarga de:
-- interfaz
-- experiencia del jugador
-- animación del juego
-- gestión visual de tienda y oráculo
-- lectura de sesión local
-- conexión inicial con Phantom
+### JavaScript Vanilla
+Se usa para:
+- conexión entre pantallas
+- gameplay en canvas
+- movimiento
+- disparo
+- spawn de enemigos
+- boss
+- tienda
+- inventario
+- progresión
+- guardado local
+- interacción con backend
 
 ## Backend
-Se encarga de:
-- autenticación por firma
-- verificación criptográfica
-- generación de sesiones
-- lógica de reward
+
+### Node.js
+Runtime principal del servidor.
+
+### Express
+Framework HTTP para:
+- crear endpoints
+- recibir peticiones del frontend
+- manejar autenticación y rewards
+
+## Blockchain
+
+### `@solana/web3.js`
+Se usa para:
 - conexión con Solana
-- wallet del servidor para recompensas
+- generación/carga de keypairs
+- lectura de balances
+- transferencias
+- operaciones básicas con wallet
+
+### Phantom Wallet
+Se usa para:
+- conectar la identidad del jugador
+- firmar nonce de autenticación
+- recibir recompensas
+
+## Persistencia local
+
+### localStorage
+Se usa para guardar datos del jugador dentro del navegador:
+- skin equipada
+- skins compradas
+- mejoras compradas
+- progreso
+- reward pendiente local
+- estado de tienda/oráculo
 
 ---
 
-# Estructura general de archivos
+# Estructura del proyecto
 
 ## Frontend
 
 ```text
 frontend/
-  index.html
-  style.css
-  wallet.js
-  game.js
-  api.js
-  assets/
-    images/
-      sol-runner-logo.png
-    icons/
-      solrun.ico
+│
+├── index.html
+├── style.css
+├── wallet.js
+├── game.js
+├── api.js
+│
+└── assets/
+    ├── images/
+    │   └── sol-runner-logo.png
+    └── icons/
+        └── solrun.ico
