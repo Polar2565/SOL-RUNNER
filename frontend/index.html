@@ -10,15 +10,12 @@
 </head>
 <body>
   <main class="app-shell">
-    <!-- LOGIN -->
     <section id="loginScreen" class="screen screen--center active">
       <div class="panel hero-panel">
         <div class="hero-copy">
           <p class="eyebrow">AUTHENTICATION</p>
           <h1 class="brand-title">SOL RUNNER</h1>
-          <p class="hero-text">
-            Conecta Phantom, firma tu sesión y entra a la arena.
-          </p>
+          <p class="hero-text">Conecta Phantom, firma tu sesión y entra a la arena.</p>
 
           <div class="hero-actions">
             <button id="connectWalletBtn" type="button">Conectar Phantom</button>
@@ -54,7 +51,6 @@
       </div>
     </section>
 
-    <!-- MENÚ -->
     <section id="menuScreen" class="screen screen--center">
       <div class="panel menu-panel">
         <div class="menu-main">
@@ -125,51 +121,88 @@
               <span>Velocidad</span>
               <strong id="speedLabel">4</strong>
             </div>
+            <div class="info-row">
+              <span>Armadura</span>
+              <strong id="armorLabel">0</strong>
+            </div>
+            <div class="info-row">
+              <span>Crítico</span>
+              <strong id="critLabel">0</strong>
+            </div>
+          </article>
+
+          <article class="info-card">
+            <h3>Economía del piso</h3>
+            <div class="info-row">
+              <span>Piso</span>
+              <strong id="menuFloorValue">1</strong>
+            </div>
+            <div class="info-row">
+              <span>Entrada</span>
+              <strong id="menuEntryFeeValue">0.0000 SOL</strong>
+            </div>
+            <div class="info-row">
+              <span>Reward estimada</span>
+              <strong id="menuRewardEstimateValue">0.0000 SOL</strong>
+            </div>
+            <div class="info-row">
+              <span>Penalización</span>
+              <strong id="menuLossPenaltyValue">0.0000 SOL</strong>
+            </div>
+            <div class="info-row">
+              <span>Objetivo</span>
+              <strong id="menuTargetKillsValue">0 kills</strong>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- GAME -->
     <section id="gameScreen" class="screen screen--game">
       <div class="game-shell">
-        <header class="game-hud">
-          <div class="hud-left">
-            <div class="hud-box">
-              <span class="hud-label">PISO</span>
+        <header class="game-hud game-hud--new">
+          <div class="hud-left hud-left--new">
+            <div class="hud-card hud-card--floor">
+              <span class="hud-label">Piso</span>
               <strong id="floorLabel">1</strong>
             </div>
 
-            <div class="hud-box">
-              <span class="hud-label">SALA</span>
+            <div class="hud-card hud-card--room">
+              <span class="hud-label">Sala</span>
               <strong id="roomLabel">1/7</strong>
             </div>
 
-            <div class="hud-box hud-box--hearts">
-              <div id="heartsMeter" class="hearts-meter"></div>
+            <div class="hud-vitals">
+              <div class="hud-vitals-top">
+                <span>Vida</span>
+                <strong id="hudHealthText">100%</strong>
+              </div>
+              <div id="heartsMeter" class="hearts-meter hearts-meter--new"></div>
             </div>
 
-            <div class="hud-box hud-box--dash">
-              <div id="dashMeter" class="dash-meter"></div>
+            <div class="hud-dash-card">
+              <span class="hud-label">Carga</span>
+              <div id="dashMeter" class="dash-meter dash-meter--new"></div>
             </div>
 
-            <div class="hud-box hud-box--kills">
-              <span class="hud-label">KILLS</span>
+            <div class="hud-card hud-card--kills">
+              <span class="hud-label">Objetivo</span>
               <strong id="killsLabel">0/50</strong>
             </div>
           </div>
 
-          <div class="hud-right">
-            <div class="hud-mini">
-              <span class="hud-mini-label">SOL</span>
+          <div class="hud-right hud-right--new">
+            <div class="hud-resource">
+              <span>SOL</span>
               <strong id="coinsLabelTop">0.0000</strong>
             </div>
 
-            <div class="hud-mini">
-              <span class="hud-mini-label">KILLS</span>
+            <div class="hud-resource">
+              <span>Kills</span>
               <strong id="killsTotalLabel">0</strong>
             </div>
 
+            <button id="pauseGameBtn" type="button" class="hud-btn hud-btn--pause">Pausa</button>
             <button id="openStoreFromGameBtn" type="button" class="hud-btn">Tienda</button>
             <button id="openOracleFromGameBtn" type="button" class="hud-btn">Oráculo</button>
             <button id="backToMenuFromGameBtn" type="button" class="hud-btn hud-btn--danger">
@@ -190,24 +223,23 @@
         </div>
 
         <div class="game-footer-hint">
-          WASD / FLECHAS: mover &nbsp;&nbsp; • &nbsp;&nbsp; CLICK IZQUIERDO: disparar
+          WASD / FLECHAS: mover &nbsp;&nbsp; • &nbsp;&nbsp; CLICK IZQUIERDO: disparar &nbsp;&nbsp; • &nbsp;&nbsp; ESC: pausa
         </div>
       </div>
     </section>
 
-    <!-- STORE MODAL -->
     <div id="storeModal" class="modal-shell" aria-hidden="true">
       <div class="modal-backdrop" data-close-modal="store"></div>
 
       <div class="modal-panel modal-panel--store">
         <div class="modal-header">
           <div>
-            <h2 class="modal-title">⚔ TIENDA DE LA MAZMORRA</h2>
+            <h2 class="modal-title">TIENDA DE LA MAZMORRA</h2>
 
             <div class="store-header-meta">
               <div class="modal-balance">SOL: <strong id="storeSolLabel">0.0000</strong></div>
               <div class="store-collection-pill">
-                Colección: <strong id="ownedSkinsCountLabel">1 / 4</strong>
+                Colección: <strong id="ownedSkinsCountLabel">1 / 8</strong>
               </div>
               <div class="store-collection-pill">
                 Equipada: <strong id="equippedSkinStoreLabel">Cordero</strong>
@@ -224,16 +256,15 @@
           <button id="tabRelicsBtn" type="button" class="tab-btn">Reliquias</button>
         </div>
 
-        <!-- PERSONAJES / COLECCIÓN -->
         <div id="tabCharacters" class="store-tab active">
           <div class="shop-grid shop-grid--characters">
             <article id="skinLambCard" class="shop-card shop-card--equipped">
               <div class="shop-rarity">COMMON</div>
               <div id="skinLambState" class="shop-owned-badge shop-owned-badge--equipped">Equipado</div>
-              <div class="shop-sprite shop-sprite--lamb"></div>
+              <div class="shop-sprite shop-sprite--cordero"></div>
               <h3>Cordero</h3>
               <p>El elegido</p>
-              <div class="shop-stats">HP -1 · SPD -1 · 1 lágrima</div>
+              <div class="shop-stats">Base inicial · 1 lágrima</div>
               <div class="shop-price shop-price--free">GRATIS</div>
               <button id="buySkinLambBtn" type="button" class="shop-btn shop-btn--equipped" disabled>
                 Equipado
@@ -243,10 +274,10 @@
             <article id="skinVoidCard" class="shop-card">
               <div class="shop-rarity shop-rarity--rare">RARE</div>
               <div id="skinVoidState" class="shop-owned-badge">No comprado</div>
-              <div class="shop-sprite shop-sprite--void"></div>
+              <div class="shop-sprite shop-sprite--sectorio"></div>
               <h3>Sectorio</h3>
               <p>Devoto del caos</p>
-              <div class="shop-stats">HP -1.2 · SPD -1.1 · 2 balas</div>
+              <div class="shop-stats">2 balas · disparo violeta</div>
               <div class="shop-price">0.0040 SOL</div>
               <button id="buySkinVoidBtn" type="button" class="shop-btn">Comprar</button>
             </article>
@@ -254,10 +285,10 @@
             <article id="skinSolarCard" class="shop-card">
               <div class="shop-rarity shop-rarity--epic">EPIC</div>
               <div id="skinSolarState" class="shop-owned-badge">No comprado</div>
-              <div class="shop-sprite shop-sprite--solar"></div>
+              <div class="shop-sprite shop-sprite--hereje"></div>
               <h3>Hereje</h3>
               <p>Ve en la oscuridad</p>
-              <div class="shop-stats">HP 1.5 · SPD -1.6 · 3 balas</div>
+              <div class="shop-stats">3 balas · fuego solar</div>
               <div class="shop-price">0.0050 SOL</div>
               <button id="buySkinSolarBtn" type="button" class="shop-btn">Comprar</button>
             </article>
@@ -265,22 +296,65 @@
             <article id="skinBloodCard" class="shop-card">
               <div class="shop-rarity shop-rarity--legend">LEGENDARY</div>
               <div id="skinBloodState" class="shop-owned-badge">No comprado</div>
-              <div class="shop-sprite shop-sprite--blood"></div>
+              <div class="shop-sprite shop-sprite--dios-sangre"></div>
               <h3>Dios de Sangre</h3>
               <p>El caos encarnado</p>
-              <div class="shop-stats">HP -2.5 · SPD -2 · 5 balas</div>
+              <div class="shop-stats">5 balas · sangre crítica</div>
               <div class="shop-price">0.0070 SOL</div>
               <button id="buySkinBloodBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article id="skinAshCard" class="shop-card">
+              <div class="shop-rarity shop-rarity--rare">RARE</div>
+              <div id="skinAshState" class="shop-owned-badge">No comprado</div>
+              <div class="shop-sprite shop-sprite--peregrino-ceniza"></div>
+              <h3>Peregrino de Ceniza</h3>
+              <p>Sobrevive entre brasas</p>
+              <div class="shop-stats">mejor contra hordas</div>
+              <div class="shop-price">0.0045 SOL</div>
+              <button id="buySkinAshBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article id="skinNunCard" class="shop-card">
+              <div class="shop-rarity shop-rarity--epic">EPIC</div>
+              <div id="skinNunState" class="shop-owned-badge">No comprado</div>
+              <div class="shop-sprite shop-sprite--monja-vacio"></div>
+              <h3>Monja del Vacío</h3>
+              <p>Controla proyectiles oscuros</p>
+              <div class="shop-stats">sinergia con focus</div>
+              <div class="shop-price">0.0055 SOL</div>
+              <button id="buySkinNunBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article id="skinFallenKingCard" class="shop-card">
+              <div class="shop-rarity shop-rarity--legend">LEGENDARY</div>
+              <div id="skinFallenKingState" class="shop-owned-badge">No comprado</div>
+              <div class="shop-sprite shop-sprite--rey-caido"></div>
+              <h3>Rey Caído</h3>
+              <p>Poder pesado y oscuro</p>
+              <div class="shop-stats">alto daño · baja movilidad</div>
+              <div class="shop-price">0.0075 SOL</div>
+              <button id="buySkinFallenKingBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article id="skinBrokenAngelCard" class="shop-card">
+              <div class="shop-rarity shop-rarity--legend">MYTHIC</div>
+              <div id="skinBrokenAngelState" class="shop-owned-badge">No comprado</div>
+              <div class="shop-sprite shop-sprite--arcangel-roto"></div>
+              <h3>Arcángel Roto</h3>
+              <p>La build más agresiva</p>
+              <div class="shop-stats">crítico alto · proyectiles rápidos</div>
+              <div class="shop-price">0.0090 SOL</div>
+              <button id="buySkinBrokenAngelBtn" type="button" class="shop-btn">Comprar</button>
             </article>
           </div>
         </div>
 
-        <!-- ARMAS -->
         <div id="tabWeapons" class="store-tab">
           <div class="shop-grid shop-grid--items">
             <article class="shop-card">
               <div class="shop-rarity shop-rarity--rare">ARMA</div>
-              <div class="shop-item-icon shop-item-icon--damage"></div>
+              <div class="shop-item-icon shop-item-icon--damage-boost"></div>
               <h3>Damage Boost</h3>
               <p>Aumenta el daño de tus disparos.</p>
               <div class="shop-stats">+1 daño permanente</div>
@@ -290,7 +364,7 @@
 
             <article class="shop-card">
               <div class="shop-rarity shop-rarity--epic">ARMA</div>
-              <div class="shop-item-icon shop-item-icon--split"></div>
+              <div class="shop-item-icon shop-item-icon--split-shot"></div>
               <h3>Split Shot</h3>
               <p>Disparas una bala adicional en abanico.</p>
               <div class="shop-stats">+1 proyectil por disparo</div>
@@ -300,24 +374,53 @@
 
             <article class="shop-card">
               <div class="shop-rarity shop-rarity--legend">ARMA</div>
-              <div class="shop-item-icon shop-item-icon--focus"></div>
+              <div class="shop-item-icon shop-item-icon--focus-lens"></div>
               <h3>Focus Lens</h3>
               <p>Incrementa precisión y daño crítico.</p>
-              <div class="shop-stats">+crit +precisión</div>
+              <div class="shop-stats">crítico + precisión</div>
               <div class="shop-price">0.0080 SOL</div>
               <button id="buyFocusLensBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article class="shop-card">
+              <div class="shop-rarity shop-rarity--epic">ARMA</div>
+              <div class="shop-item-icon shop-item-icon--chain-burst"></div>
+              <h3>Chain Burst</h3>
+              <p>Los impactos pueden generar daño encadenado.</p>
+              <div class="shop-stats">rebote de daño</div>
+              <div class="shop-price">0.0075 SOL</div>
+              <button id="buyChainBurstBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article class="shop-card">
+              <div class="shop-rarity shop-rarity--legend">ARMA</div>
+              <div class="shop-item-icon shop-item-icon--glass-cannon"></div>
+              <h3>Glass Cannon</h3>
+              <p>Mucho daño a cambio de más riesgo.</p>
+              <div class="shop-stats">daño alto · defensa baja</div>
+              <div class="shop-price">0.0085 SOL</div>
+              <button id="buyGlassCannonBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article class="shop-card">
+              <div class="shop-rarity shop-rarity--rare">ARMA</div>
+              <div class="shop-item-icon shop-item-icon--crit-boost"></div>
+              <h3>Crit Boost</h3>
+              <p>Aumenta tu probabilidad crítica.</p>
+              <div class="shop-stats">+1 crítico permanente</div>
+              <div class="shop-price">0.0042 SOL</div>
+              <button id="buyCritBoostBtn" type="button" class="shop-btn">Comprar</button>
             </article>
           </div>
         </div>
 
-        <!-- RELIQUIAS -->
         <div id="tabRelics" class="store-tab">
           <div class="shop-grid shop-grid--items">
             <article class="shop-card">
               <div class="shop-rarity shop-rarity--legend">RELIQUIA</div>
-              <div class="shop-item-icon shop-item-icon--speed"></div>
+              <div class="shop-item-icon shop-item-icon--speed-boost"></div>
               <h3>Speed Boost</h3>
-              <p>Mejora tu movimiento y tu dodge.</p>
+              <p>Mejora tu movimiento.</p>
               <div class="shop-stats">+1 velocidad permanente</div>
               <div class="shop-price">0.0025 SOL</div>
               <button id="buySpeedBtn" type="button" class="shop-btn">Comprar</button>
@@ -325,35 +428,64 @@
 
             <article class="shop-card">
               <div class="shop-rarity shop-rarity--epic">RELIQUIA</div>
-              <div class="shop-item-icon shop-item-icon--blood"></div>
+              <div class="shop-item-icon shop-item-icon--blood-core"></div>
               <h3>Blood Core</h3>
               <p>Robas vida al eliminar enemigos.</p>
-              <div class="shop-stats">lifesteal on kill</div>
+              <div class="shop-stats">curación por kill</div>
               <div class="shop-price">0.0065 SOL</div>
               <button id="buyBloodCoreBtn" type="button" class="shop-btn">Comprar</button>
             </article>
 
             <article class="shop-card">
               <div class="shop-rarity shop-rarity--rare">RELIQUIA</div>
-              <div class="shop-item-icon shop-item-icon--veil"></div>
+              <div class="shop-item-icon shop-item-icon--night-veil"></div>
               <h3>Night Veil</h3>
-              <p>Reduce el daño recibido por contacto.</p>
-              <div class="shop-stats">defensa +mitigación</div>
+              <p>Reduce el daño recibido.</p>
+              <div class="shop-stats">mitigación defensiva</div>
               <div class="shop-price">0.0045 SOL</div>
               <button id="buyNightVeilBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article class="shop-card">
+              <div class="shop-rarity shop-rarity--rare">RELIQUIA</div>
+              <div class="shop-item-icon shop-item-icon--armor-boost"></div>
+              <h3>Armor Boost</h3>
+              <p>Aumenta tu resistencia base.</p>
+              <div class="shop-stats">+1 armadura permanente</div>
+              <div class="shop-price">0.0035 SOL</div>
+              <button id="buyArmorBoostBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article class="shop-card">
+              <div class="shop-rarity shop-rarity--epic">RELIQUIA</div>
+              <div class="shop-item-icon shop-item-icon--ember-heart"></div>
+              <h3>Ember Heart</h3>
+              <p>Al caer bajo de vida, libera brasas.</p>
+              <div class="shop-stats">explosión defensiva</div>
+              <div class="shop-price">0.0068 SOL</div>
+              <button id="buyEmberHeartBtn" type="button" class="shop-btn">Comprar</button>
+            </article>
+
+            <article class="shop-card">
+              <div class="shop-rarity shop-rarity--rare">RELIQUIA</div>
+              <div class="shop-item-icon shop-item-icon--soul-magnet"></div>
+              <h3>Soul Magnet</h3>
+              <p>Mejora la ganancia y control de la run.</p>
+              <div class="shop-stats">mejor recompensa interna</div>
+              <div class="shop-price">0.0058 SOL</div>
+              <button id="buySoulMagnetBtn" type="button" class="shop-btn">Comprar</button>
             </article>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ORACLE MODAL -->
     <div id="oracleModal" class="modal-shell" aria-hidden="true">
       <div class="modal-backdrop" data-close-modal="oracle"></div>
       <div class="modal-panel modal-panel--oracle">
         <div class="oracle-box">
           <div class="oracle-head">
-            <h2>🔮 ORÁCULO</h2>
+            <h2>ORÁCULO</h2>
             <p>1 consulta gratis por día</p>
           </div>
 
@@ -367,17 +499,56 @@
           <h3 class="oracle-message" id="oracleMessage">Consulta al oráculo...</h3>
 
           <div class="oracle-actions">
-            <button id="spinOracleBtn" type="button">⚡ Consultar</button>
+            <button id="spinOracleBtn" type="button">Consultar</button>
             <button id="dailyRewardBtn" type="button" class="btn-secondary">Ofrenda diaria</button>
             <button id="closeOracleModalBtn" type="button" class="btn-ghost">× Cerrar</button>
           </div>
         </div>
       </div>
     </div>
+
+    <div id="pauseModal" class="modal-shell modal-shell--pause" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal="pause"></div>
+
+      <div class="modal-panel modal-panel--pause">
+        <div class="pause-box">
+          <p class="eyebrow">RUN PAUSED</p>
+          <h2>PAUSA</h2>
+          <p class="pause-text">
+            La run está detenida. Puedes continuar, revisar tu build o salir al menú.
+          </p>
+
+          <div class="pause-actions">
+            <button id="resumeRunBtn" type="button">Continuar</button>
+            <button id="pauseStoreBtn" type="button">Tienda</button>
+            <button id="pauseOracleBtn" type="button">Oráculo</button>
+            <button id="pauseExitBtn" type="button" class="btn-secondary">Salir al menú</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
-  <script src="./api.js"></script>
-  <script src="./wallet.js"></script>
-  <script src="./game.js"></script>
+ <script src="./api.js"></script>
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/15.3.5/Tone.js"></script>
+
+<script src="./js/ui/notifications.js"></script>
+<script src="./js/ui/modal.manager.js"></script>
+
+<script src="./js/services/wallet.service.js"></script>
+<script src="./js/services/economy.service.js"></script>
+<script src="./js/services/auth.service.js"></script>
+<script src="./js/services/profile.service.js"></script>
+<script src="./js/services/audio.service.js"></script>
+
+<script src="./js/screens/login.screen.js"></script>
+<script src="./js/screens/menu.screen.js"></script>
+<script src="./js/screens/store.screen.js"></script>
+<script src="./js/screens/oracle.screen.js"></script>
+
+<script src="./wallet.js"></script>
+<script src="./game.js"></script>
+<script src="./js/main.js"></script>
 </body>
 </html>
