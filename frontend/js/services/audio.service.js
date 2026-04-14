@@ -5,6 +5,8 @@
   let sfxVolume = null;
   let musicNodes = [];
   let musicLoops = [];
+  let sfx = {};
+  let lastPlayed = {};
 
   const config = {
     masterDb: -4,
@@ -24,10 +26,15 @@
 
     await Tone.start();
 
+    if (Tone.context && Tone.context.state === "suspended") {
+      await Tone.context.resume();
+    }
+
     if (!ready) {
       Tone.Destination.volume.value = config.masterDb;
       musicVolume = new Tone.Volume(config.musicDb).toDestination();
       sfxVolume = new Tone.Volume(config.sfxDb).toDestination();
+      createSfxNodes();
       ready = true;
     }
 
@@ -37,6 +44,11 @@
   function safe(fn) {
     try {
       if (!ready || !hasTone()) return;
+
+      if (Tone.context && Tone.context.state === "suspended") {
+        Tone.context.resume();
+      }
+
       fn();
     } catch (error) {
       console.warn("Audio error:", error);
@@ -45,6 +57,16 @@
 
   function n() {
     return Tone.now();
+  }
+
+  function rateLimit(key, ms) {
+    const time = performance.now();
+    const last = lastPlayed[key] || 0;
+
+    if (time - last < ms) return false;
+
+    lastPlayed[key] = time;
+    return true;
   }
 
   function addNode(node) {
@@ -57,255 +79,224 @@
     return loop;
   }
 
+  function createSfxNodes() {
+    sfx.button = new Tone.Synth({
+      oscillator: { type: "triangle" },
+      envelope: { attack: 0.001, decay: 0.04, sustain: 0.03, release: 0.08 },
+    }).connect(sfxVolume);
+
+    sfx.purchaseDelay = new Tone.FeedbackDelay("16n", 0.18).connect(sfxVolume);
+    sfx.purchase = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: "triangle" },
+      envelope: { attack: 0.004, decay: 0.12, sustain: 0.18, release: 0.28 },
+    }).connect(sfx.purchaseDelay);
+
+    sfx.equip = new Tone.FMSynth({
+      harmonicity: 2.2,
+      modulationIndex: 3.5,
+      envelope: { attack: 0.005, decay: 0.14, sustain: 0.2, release: 0.25 },
+    }).connect(sfxVolume);
+
+    sfx.shootFilter = new Tone.Filter(1900, "bandpass").connect(sfxVolume);
+    sfx.shootNoise = new Tone.NoiseSynth({
+      noise: { type: "white" },
+      envelope: { attack: 0.001, decay: 0.055, sustain: 0, release: 0.02 },
+    }).connect(sfx.shootFilter);
+
+    sfx.shootGun = new Tone.MembraneSynth({
+      pitchDecay: 0.025,
+      octaves: 2.8,
+      oscillator: { type: "sine" },
+      envelope: { attack: 0.001, decay: 0.08, sustain: 0, release: 0.04 },
+    }).connect(sfxVolume);
+
+    sfx.enemyShoot = new Tone.FMSynth({
+      harmonicity: 1.4,
+      modulationIndex: 8,
+      oscillator: { type: "sawtooth" },
+      envelope: { attack: 0.002, decay: 0.08, sustain: 0.05, release: 0.08 },
+    }).connect(sfxVolume);
+
+    sfx.enemyHit = new Tone.MetalSynth({
+      frequency: 130,
+      envelope: { attack: 0.001, decay: 0.08, release: 0.03 },
+      harmonicity: 4.2,
+      modulationIndex: 14,
+      resonance: 1800,
+      octaves: 1.5,
+    }).connect(sfxVolume);
+
+    sfx.deathDistortion = new Tone.Distortion(0.45).connect(sfxVolume);
+    sfx.enemyDeath = new Tone.MembraneSynth({
+      pitchDecay: 0.07,
+      octaves: 4,
+      envelope: { attack: 0.001, decay: 0.28, sustain: 0, release: 0.12 },
+    }).connect(sfx.deathDistortion);
+
+    sfx.enemyDeathNoise = new Tone.NoiseSynth({
+      noise: { type: "brown" },
+      envelope: { attack: 0.001, decay: 0.18, sustain: 0, release: 0.08 },
+    }).connect(sfxVolume);
+
+    sfx.playerHit = new Tone.FMSynth({
+      harmonicity: 0.7,
+      modulationIndex: 12,
+      envelope: { attack: 0.001, decay: 0.18, sustain: 0, release: 0.1 },
+    }).connect(sfxVolume);
+
+    sfx.bossSpawnReverb = new Tone.Reverb({ decay: 2.2, wet: 0.4 }).connect(sfxVolume);
+    sfx.bossSpawn = new Tone.MonoSynth({
+      oscillator: { type: "sawtooth" },
+      filter: { Q: 2, type: "lowpass", rolloff: -24 },
+      envelope: { attack: 0.02, decay: 0.4, sustain: 0.25, release: 0.8 },
+      filterEnvelope: {
+        attack: 0.02,
+        decay: 0.5,
+        sustain: 0.2,
+        release: 0.9,
+        baseFrequency: 80,
+        octaves: 3,
+      },
+    }).connect(sfx.bossSpawnReverb);
+
+    sfx.bossDeathReverb = new Tone.Reverb({ decay: 2.8, wet: 0.5 }).connect(sfxVolume);
+    sfx.bossDeath = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: "triangle" },
+      envelope: { attack: 0.01, decay: 0.18, sustain: 0.12, release: 0.7 },
+    }).connect(sfx.bossDeathReverb);
+
+    sfx.rewardDelay = new Tone.FeedbackDelay("16n", 0.25).connect(sfxVolume);
+    sfx.reward = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: "triangle" },
+      envelope: { attack: 0.004, decay: 0.12, sustain: 0.18, release: 0.35 },
+    }).connect(sfx.rewardDelay);
+
+    sfx.error = new Tone.MonoSynth({
+      oscillator: { type: "square" },
+      envelope: { attack: 0.001, decay: 0.08, sustain: 0.05, release: 0.1 },
+    }).connect(sfxVolume);
+
+    sfx.oracleDelay = new Tone.FeedbackDelay("16n", 0.45).connect(sfxVolume);
+    sfx.oracle = new Tone.FMSynth({
+      harmonicity: 2.5,
+      modulationIndex: 5,
+      envelope: { attack: 0.005, decay: 0.08, sustain: 0.25, release: 0.25 },
+    }).connect(sfx.oracleDelay);
+  }
+
   function playButton() {
     safe(() => {
-      const synth = new Tone.Synth({
-        oscillator: { type: "triangle" },
-        envelope: { attack: 0.001, decay: 0.04, sustain: 0.03, release: 0.08 },
-      }).connect(sfxVolume);
+      if (!rateLimit("button", 45)) return;
 
-      synth.triggerAttackRelease("C6", "32n", n());
-      synth.triggerAttackRelease("G6", "32n", n() + 0.035);
-
-      setTimeout(() => synth.dispose(), 300);
+      sfx.button.triggerAttackRelease("C6", "32n", n());
+      sfx.button.triggerAttackRelease("G6", "32n", n() + 0.035);
     });
   }
 
   function playPurchase() {
     safe(() => {
-      const fx = new Tone.FeedbackDelay("16n", 0.18).connect(sfxVolume);
-      const synth = new Tone.PolySynth(Tone.Synth, {
-        oscillator: { type: "triangle" },
-        envelope: { attack: 0.004, decay: 0.12, sustain: 0.18, release: 0.28 },
-      }).connect(fx);
+      if (!rateLimit("purchase", 120)) return;
 
-      synth.triggerAttackRelease(["C5", "E5", "G5"], "16n", n());
-      synth.triggerAttackRelease(["E5", "G5", "B5"], "16n", n() + 0.12);
-
-      setTimeout(() => {
-        synth.dispose();
-        fx.dispose();
-      }, 800);
+      sfx.purchase.triggerAttackRelease(["C5", "E5", "G5"], "16n", n());
+      sfx.purchase.triggerAttackRelease(["E5", "G5", "B5"], "16n", n() + 0.12);
     });
   }
 
   function playEquip() {
     safe(() => {
-      const synth = new Tone.FMSynth({
-        harmonicity: 2.2,
-        modulationIndex: 3.5,
-        envelope: { attack: 0.005, decay: 0.14, sustain: 0.2, release: 0.25 },
-      }).connect(sfxVolume);
+      if (!rateLimit("equip", 120)) return;
 
-      synth.triggerAttackRelease("A4", "16n", n());
-      synth.triggerAttackRelease("D5", "16n", n() + 0.1);
-
-      setTimeout(() => synth.dispose(), 500);
+      sfx.equip.triggerAttackRelease("A4", "16n", n());
+      sfx.equip.triggerAttackRelease("D5", "16n", n() + 0.1);
     });
   }
 
   function playShoot() {
     safe(() => {
-      const filter = new Tone.Filter(1900, "bandpass").connect(sfxVolume);
+      if (!rateLimit("shoot", 38)) return;
 
-      const noise = new Tone.NoiseSynth({
-        noise: { type: "white" },
-        envelope: { attack: 0.001, decay: 0.055, sustain: 0, release: 0.02 },
-      }).connect(filter);
-
-      const gun = new Tone.MembraneSynth({
-        pitchDecay: 0.025,
-        octaves: 2.8,
-        oscillator: { type: "sine" },
-        envelope: { attack: 0.001, decay: 0.08, sustain: 0, release: 0.04 },
-      }).connect(sfxVolume);
-
-      noise.triggerAttackRelease("32n", n());
-      gun.triggerAttackRelease("C2", "32n", n());
-
-      setTimeout(() => {
-        noise.dispose();
-        filter.dispose();
-        gun.dispose();
-      }, 300);
+      sfx.shootNoise.triggerAttackRelease("32n", n());
+      sfx.shootGun.triggerAttackRelease("C2", "32n", n());
     });
   }
 
   function playEnemyShoot() {
     safe(() => {
-      const synth = new Tone.FMSynth({
-        harmonicity: 1.4,
-        modulationIndex: 8,
-        oscillator: { type: "sawtooth" },
-        envelope: { attack: 0.002, decay: 0.08, sustain: 0.05, release: 0.08 },
-      }).connect(sfxVolume);
+      if (!rateLimit("enemyShoot", 90)) return;
 
-      synth.triggerAttackRelease("F3", "32n", n());
-      synth.triggerAttackRelease("C3", "32n", n() + 0.045);
-
-      setTimeout(() => synth.dispose(), 300);
+      sfx.enemyShoot.triggerAttackRelease("F3", "32n", n());
+      sfx.enemyShoot.triggerAttackRelease("C3", "32n", n() + 0.045);
     });
   }
 
   function playEnemyHit() {
     safe(() => {
-      const hit = new Tone.MetalSynth({
-        frequency: 130,
-        envelope: { attack: 0.001, decay: 0.08, release: 0.03 },
-        harmonicity: 4.2,
-        modulationIndex: 14,
-        resonance: 1800,
-        octaves: 1.5,
-      }).connect(sfxVolume);
+      if (!rateLimit("enemyHit", 35)) return;
 
-      hit.triggerAttackRelease("32n", n());
-
-      setTimeout(() => hit.dispose(), 250);
+      sfx.enemyHit.triggerAttackRelease("32n", n());
     });
   }
 
   function playEnemyDeath() {
     safe(() => {
-      const distortion = new Tone.Distortion(0.45).connect(sfxVolume);
+      if (!rateLimit("enemyDeath", 55)) return;
 
-      const synth = new Tone.MembraneSynth({
-        pitchDecay: 0.07,
-        octaves: 4,
-        envelope: { attack: 0.001, decay: 0.28, sustain: 0, release: 0.12 },
-      }).connect(distortion);
-
-      const noise = new Tone.NoiseSynth({
-        noise: { type: "brown" },
-        envelope: { attack: 0.001, decay: 0.18, sustain: 0, release: 0.08 },
-      }).connect(sfxVolume);
-
-      synth.triggerAttackRelease("A1", "8n", n());
-      noise.triggerAttackRelease("16n", n() + 0.03);
-
-      setTimeout(() => {
-        synth.dispose();
-        noise.dispose();
-        distortion.dispose();
-      }, 600);
+      sfx.enemyDeath.triggerAttackRelease("A1", "8n", n());
+      sfx.enemyDeathNoise.triggerAttackRelease("16n", n() + 0.03);
     });
   }
 
   function playPlayerHit() {
     safe(() => {
-      const synth = new Tone.FMSynth({
-        harmonicity: 0.7,
-        modulationIndex: 12,
-        envelope: { attack: 0.001, decay: 0.18, sustain: 0, release: 0.1 },
-      }).connect(sfxVolume);
+      if (!rateLimit("playerHit", 180)) return;
 
-      synth.triggerAttackRelease("C2", "16n", n());
-
-      setTimeout(() => synth.dispose(), 450);
+      sfx.playerHit.triggerAttackRelease("C2", "16n", n());
     });
   }
 
   function playBossSpawn() {
     safe(() => {
-      const reverb = new Tone.Reverb({ decay: 2.2, wet: 0.4 }).connect(sfxVolume);
-
-      const synth = new Tone.MonoSynth({
-        oscillator: { type: "sawtooth" },
-        filter: { Q: 2, type: "lowpass", rolloff: -24 },
-        envelope: { attack: 0.02, decay: 0.4, sustain: 0.25, release: 0.8 },
-        filterEnvelope: {
-          attack: 0.02,
-          decay: 0.5,
-          sustain: 0.2,
-          release: 0.9,
-          baseFrequency: 80,
-          octaves: 3,
-        },
-      }).connect(reverb);
-
-      synth.triggerAttackRelease("C2", "2n", n());
-      synth.triggerAttackRelease("G1", "2n", n() + 0.18);
-
-      setTimeout(() => {
-        synth.dispose();
-        reverb.dispose();
-      }, 1700);
+      sfx.bossSpawn.triggerAttackRelease("C2", "2n", n());
+      sfx.bossSpawn.triggerAttackRelease("G1", "2n", n() + 0.18);
     });
   }
 
   function playBossDeath() {
     safe(() => {
-      const reverb = new Tone.Reverb({ decay: 2.8, wet: 0.5 }).connect(sfxVolume);
-
-      const synth = new Tone.PolySynth(Tone.Synth, {
-        oscillator: { type: "triangle" },
-        envelope: { attack: 0.01, decay: 0.18, sustain: 0.12, release: 0.7 },
-      }).connect(reverb);
-
-      synth.triggerAttackRelease(["C4", "E4", "G4"], "8n", n());
-      synth.triggerAttackRelease(["E4", "G4", "B4"], "8n", n() + 0.18);
-      synth.triggerAttackRelease(["G4", "B4", "D5"], "4n", n() + 0.38);
-
-      setTimeout(() => {
-        synth.dispose();
-        reverb.dispose();
-      }, 1700);
+      sfx.bossDeath.triggerAttackRelease(["C4", "E4", "G4"], "8n", n());
+      sfx.bossDeath.triggerAttackRelease(["E4", "G4", "B4"], "8n", n() + 0.18);
+      sfx.bossDeath.triggerAttackRelease(["G4", "B4", "D5"], "4n", n() + 0.38);
     });
   }
 
   function playReward() {
     safe(() => {
-      const delay = new Tone.FeedbackDelay("16n", 0.25).connect(sfxVolume);
+      if (!rateLimit("reward", 200)) return;
 
-      const synth = new Tone.PolySynth(Tone.Synth, {
-        oscillator: { type: "triangle" },
-        envelope: { attack: 0.004, decay: 0.12, sustain: 0.18, release: 0.35 },
-      }).connect(delay);
-
-      synth.triggerAttackRelease(["C5", "E5", "G5"], "16n", n());
-      synth.triggerAttackRelease(["D5", "F5", "A5"], "16n", n() + 0.14);
-      synth.triggerAttackRelease(["E5", "G5", "B5"], "8n", n() + 0.28);
-
-      setTimeout(() => {
-        synth.dispose();
-        delay.dispose();
-      }, 1200);
+      sfx.reward.triggerAttackRelease(["C5", "E5", "G5"], "16n", n());
+      sfx.reward.triggerAttackRelease(["D5", "F5", "A5"], "16n", n() + 0.14);
+      sfx.reward.triggerAttackRelease(["E5", "G5", "B5"], "8n", n() + 0.28);
     });
   }
 
   function playError() {
     safe(() => {
-      const synth = new Tone.MonoSynth({
-        oscillator: { type: "square" },
-        envelope: { attack: 0.001, decay: 0.08, sustain: 0.05, release: 0.1 },
-      }).connect(sfxVolume);
+      if (!rateLimit("error", 180)) return;
 
-      synth.triggerAttackRelease("C3", "16n", n());
-      synth.triggerAttackRelease("G2", "16n", n() + 0.09);
-
-      setTimeout(() => synth.dispose(), 450);
+      sfx.error.triggerAttackRelease("C3", "16n", n());
+      sfx.error.triggerAttackRelease("G2", "16n", n() + 0.09);
     });
   }
 
   function playOracleSpin() {
     safe(() => {
-      const delay = new Tone.FeedbackDelay("16n", 0.45).connect(sfxVolume);
-
-      const synth = new Tone.FMSynth({
-        harmonicity: 2.5,
-        modulationIndex: 5,
-        envelope: { attack: 0.005, decay: 0.08, sustain: 0.25, release: 0.25 },
-      }).connect(delay);
+      if (!rateLimit("oracleSpin", 250)) return;
 
       const notes = ["C5", "D5", "E5", "G5", "A5", "C6", "A5", "G5"];
 
       notes.forEach((note, index) => {
-        synth.triggerAttackRelease(note, "32n", n() + index * 0.055);
+        sfx.oracle.triggerAttackRelease(note, "32n", n() + index * 0.055);
       });
-
-      setTimeout(() => {
-        synth.dispose();
-        delay.dispose();
-      }, 900);
     });
   }
 
@@ -455,7 +446,7 @@
       }, "2n").start("4n")
     );
 
-    Tone.Transport.start();
+    Tone.Transport.start("+0.05");
     resumeMusic();
   }
 
