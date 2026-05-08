@@ -5,190 +5,189 @@
 <h1 align="center">SOL RUNNER</h1>
 
 <p align="center">
-  Web3 arena roguelite built on Solana with Phantom Wallet authentication, reward systems, progression mechanics and blockchain-powered gameplay.
+  Arena roguelite Web3 construido sobre Solana con autenticación mediante Phantom Wallet, sistema de recompensas y progresión conectada a blockchain.
 </p>
 
 ---
 
 <p align="center">
-  <a href="https://sol-runner.onrender.com">Live Demo</a>
+  <a href="https://sol-runner.onrender.com">Demo Web</a>
   ·
   <a href="https://youtu.be/9k9FAtFfYjg">Video Demo</a>
   ·
-  <a href="https://github.com/Polar2565/SOL-RUNNER">GitHub Repository</a>
+  <a href="https://github.com/Polar2565/SOL-RUNNER">Repositorio GitHub</a>
 </p>
 
 ---
 
 # SOL RUNNER
 
-SOL RUNNER is a browser-based arena roguelite integrated with the Solana blockchain. Players connect their Phantom Wallet, authenticate through wallet signatures and enter combat runs where they can progress through enemy waves, survive floors, obtain rewards and interact with a Web3-enabled game economy.
+SOL RUNNER es un videojuego web tipo arena roguelite integrado con la blockchain de Solana. Los jugadores conectan su Phantom Wallet, se autentican mediante firma digital y entran a partidas donde deben sobrevivir oleadas de enemigos, avanzar pisos, obtener recompensas y progresar dentro de un sistema conectado con Web3.
 
-The project combines:
+El proyecto combina:
 
-- fast-paced roguelite gameplay
-- wallet-based identity
-- blockchain reward validation
-- Solana transaction integration
-- Web3 gaming mechanics
-- progression and collection systems
+- gameplay tipo roguelite
+- autenticación con wallet
+- validación de recompensas
+- integración con Solana
+- progresión del jugador
+- economía conectada a blockchain
+- sistema de colección y skins
 
-Unlike traditional games where accounts and rewards exist only inside centralized databases, SOL RUNNER uses Solana to create a verifiable reward flow connected directly to player wallets.
-
----
-
-# Core Features
-
-## Phantom Wallet Authentication
-
-- Wallet connection with Phantom
-- Signature-based authentication
-- Wallet used as player identity
-- Secure login flow using signed messages
-
-## Arena Roguelite Gameplay
-
-- Survival arena gameplay
-- Enemy waves
-- Progressive difficulty
-- Floor progression
-- Boss encounters
-- Real-time combat
-
-## Reward System
-
-- Reward validation through backend
-- Solana Devnet transactions
-- Treasury wallet reward distribution
-- Blockchain-connected progression
-
-## Shop & Upgrade System
-
-- In-game upgrades
-- Character progression
-- Unlockable content
-- Persistent player improvements
-
-## Character & Skin System
-
-- Cosmetic system
-- Character customization
-- Future NFT scalability
-- Persistent cosmetic inventory
-
-## Web3 Integration
-
-- Solana blockchain connectivity
-- Wallet identity layer
-- On-chain compatible architecture
-- Blockchain-based reward flow
+A diferencia de los juegos tradicionales donde las recompensas y cuentas existen únicamente dentro de servidores privados, SOL RUNNER utiliza Solana para construir un flujo verificable conectado directamente a la wallet del jugador.
 
 ---
 
-# Problem
+# Características principales
 
-Most traditional games use closed ecosystems where:
+## Autenticación con Phantom Wallet
 
-- rewards are fully centralized
-- players do not truly own assets
-- progression exists only in private databases
-- users cannot verify reward systems
-- Web3 integrations are often superficial
+- conexión de wallet Phantom
+- autenticación mediante firma
+- la wallet funciona como identidad del jugador
+- sistema de login seguro sin contraseñas
 
-Many blockchain games also suffer from poor gameplay quality and focus only on token speculation instead of player experience.
+## Gameplay tipo Arena Roguelite
+
+- supervivencia por oleadas
+- enemigos progresivos
+- dificultad creciente
+- progresión por pisos
+- combate en tiempo real
+- sistema de boss
+
+## Sistema de recompensas
+
+- validación de rewards desde backend
+- transacciones en Solana Devnet
+- distribución de recompensas
+- progresión conectada con blockchain
+
+## Sistema de tienda y mejoras
+
+- mejoras dentro del juego
+- progresión del personaje
+- desbloqueo de contenido
+- persistencia local
+
+## Sistema de skins y personajes
+
+- cosméticos
+- personalización
+- estructura preparada para NFTs
+- inventario persistente
+
+## Integración Web3
+
+- conexión con Solana
+- identidad mediante wallet
+- arquitectura preparada para on-chain
+- sistema de recompensas verificable
 
 ---
 
-# Solution
+# Problema
 
-SOL RUNNER combines gameplay-first design with real blockchain utility.
+Muchos videojuegos tradicionales utilizan sistemas completamente centralizados donde:
 
-Instead of using wallets only as cosmetic login systems, the wallet becomes part of the player's identity and progression flow. Solana enables transparent reward validation, low-cost transactions and future scalability for digital assets, collectibles and tokenized rewards.
+- las recompensas no son verificables
+- los jugadores no poseen realmente sus activos
+- toda la progresión depende de bases de datos privadas
+- no existe transparencia en economías internas
 
-The project focuses on making Web3 gaming more accessible through:
-
-- simple onboarding
-- browser-based gameplay
-- intuitive wallet integration
-- fast gameplay sessions
-- low-friction user experience
+Por otro lado, muchos juegos blockchain priorizan únicamente la especulación y descuidan la experiencia de juego.
 
 ---
 
-# Architecture
+# Solución
 
-The project is divided into three major layers.
+SOL RUNNER busca combinar gameplay primero y blockchain después.
+
+La idea no es usar wallets únicamente como login decorativo, sino convertirlas en parte de la identidad y progresión del jugador. Solana permite validar recompensas, realizar transacciones rápidas y construir una infraestructura escalable para futuras integraciones como NFTs, tokens o marketplace.
+
+El proyecto busca hacer el Web3 gaming más accesible mediante:
+
+- experiencia simple
+- partidas rápidas
+- conexión intuitiva con wallet
+- acceso desde navegador
+- baja fricción para nuevos usuarios
 
 ---
 
-## Frontend Layer
+# Arquitectura
 
-Responsible for the gameplay and user experience.
+El proyecto está dividido en tres capas principales.
 
-### Responsibilities
+---
 
-- game rendering
-- UI/HUD
-- player controls
-- menus and modals
-- shop system
-- progression visuals
-- gameplay loop
-- API communication
-- wallet interaction
+## Frontend
 
-### Technologies
+Responsable de toda la experiencia visual y gameplay.
+
+### Responsabilidades
+
+- render del juego
+- HUD
+- canvas
+- controles
+- menús y modales
+- sistema de tienda
+- progresión visual
+- comunicación con backend
+- conexión con wallet
+
+### Tecnologías
 
 - HTML5
 - CSS3
-- Vanilla JavaScript
+- JavaScript Vanilla
 - Canvas API
 
 ---
 
-## Backend Layer
+## Backend
 
-Responsible for authentication, rewards and blockchain logic.
+Responsable de autenticación, validación y lógica blockchain.
 
-### Responsibilities
+### Responsabilidades
 
-- nonce generation
-- signature verification
-- session management
-- reward calculation
-- reward validation
-- treasury wallet interaction
-- Solana RPC communication
-- gameplay validation
+- generación de nonce
+- validación de firmas
+- manejo de sesiones
+- validación de rewards
+- lógica de recompensas
+- conexión con Solana
+- validación de runs
 
-### Technologies
+### Tecnologías
 
 - Node.js
 - Express.js
 
 ---
 
-## Blockchain Layer
+## Blockchain
 
-Handles blockchain-related operations.
+Capa encargada de la interacción con Solana.
 
-### Responsibilities
+### Responsabilidades
 
-- wallet authentication
-- reward transfers
-- transaction validation
-- blockchain communication
-- Solana network interaction
+- autenticación mediante wallet
+- validación de transacciones
+- envío de recompensas
+- interacción con RPC
+- conexión con Devnet
 
-### Technologies
+### Tecnologías
 
 - Solana Devnet
-- @solana/web3.js
 - Phantom Wallet
+- @solana/web3.js
 
 ---
 
-# Tech Stack
+# Tecnologías utilizadas
 
 ## Frontend
 
@@ -208,125 +207,125 @@ Handles blockchain-related operations.
 - Phantom Wallet
 - @solana/web3.js
 
-## Deployment
+## Deploy
 
 - Render
 
 ---
 
-# Authentication Flow
+# Flujo de autenticación
 
-The authentication system uses Phantom Wallet signatures instead of traditional usernames and passwords.
+El sistema utiliza autenticación mediante Phantom Wallet en lugar de usuario y contraseña tradicionales.
 
-### Flow
+### Flujo
 
-1. User connects Phantom Wallet
-2. Backend generates nonce
-3. User signs authentication message
-4. Backend verifies signature
-5. Session is created
-6. Wallet becomes player identity
+1. El usuario conecta Phantom
+2. El backend genera un nonce
+3. El usuario firma el mensaje
+4. El backend valida la firma
+5. Se crea la sesión
+6. La wallet funciona como identidad del jugador
 
-This allows secure authentication without storing passwords.
+Esto permite autenticación segura sin almacenar contraseñas.
 
 ---
 
-# Reward System
+# Sistema de recompensas
 
-The reward system connects gameplay with blockchain validation.
+El sistema conecta gameplay y validación blockchain.
 
-### Current Flow
+### Flujo actual
 
-- player finishes gameplay session
-- backend validates run
-- reward logic is calculated
-- treasury wallet sends reward
-- transaction is validated on Solana Devnet
+- el jugador termina una partida
+- el backend valida el resultado
+- se calcula la recompensa
+- la wallet treasury envía el reward
+- la transacción se valida en Solana Devnet
 
-The architecture is designed to later support:
+La arquitectura está preparada para futuras integraciones como:
 
-- SPL tokens
+- SPL Tokens
 - NFTs
-- marketplace integration
-- seasonal rewards
+- marketplace
+- rewards estacionales
 - ranking rewards
 
 ---
 
-# Why Solana?
+# ¿Por qué Solana?
 
-Solana is necessary because the project requires:
+Solana es necesaria porque el proyecto requiere:
 
-- fast transactions
-- low transaction fees
-- wallet-native authentication
-- verifiable rewards
-- scalable blockchain gaming infrastructure
+- transacciones rápidas
+- bajas comisiones
+- autenticación basada en wallet
+- rewards verificables
+- infraestructura escalable para gaming
 
-A traditional centralized database could simulate points internally, but would not provide:
+Una base de datos tradicional podría guardar puntos de manera interna, pero no ofrecería:
 
-- transparent reward validation
-- wallet ownership
-- blockchain interoperability
-- future asset portability
-- verifiable reward systems
+- transparencia
+- validación pública
+- propiedad digital
+- interoperabilidad blockchain
+- rewards verificables
 
-Solana enables real Web3 gaming infrastructure while maintaining low latency and scalability.
-
----
-
-# Gameplay Loop
-
-The core gameplay loop is:
-
-1. Connect wallet
-2. Authenticate with Phantom
-3. Enter run
-4. Defeat enemies
-5. Survive floors
-6. Earn rewards
-7. Upgrade character
-8. Repeat progression
-
-The game is designed around short but replayable sessions.
+Solana permite construir una experiencia Web3 real manteniendo velocidad y escalabilidad.
 
 ---
 
-# Shop System
+# Gameplay principal
 
-Players can interact with an in-game shop system that allows progression and customization.
+El flujo principal del juego es:
 
-### Features
+1. conectar wallet
+2. autenticarse con Phantom
+3. iniciar run
+4. derrotar enemigos
+5. avanzar pisos
+6. obtener recompensas
+7. mejorar personaje
+8. repetir progresión
 
-- upgrades
-- persistent improvements
-- cosmetic systems
-- future NFT-compatible structure
-- progression scaling
+El diseño está enfocado en sesiones rápidas y rejugables.
 
 ---
 
-# Character & Cosmetic System
+# Sistema de tienda
 
-SOL RUNNER includes a character and cosmetic structure designed for future expansion.
+El jugador puede interactuar con una tienda integrada dentro del menú principal.
 
-### Current Features
+### Características
 
-- skin system
-- cosmetic inventory
-- persistent equipped character
-- local progression storage
+- mejoras
+- progresión persistente
+- sistema cosmético
+- estructura preparada para NFTs
+- escalado de progresión
 
-### Future Expansion
+---
 
-- NFT skins
-- rarity system
+# Sistema de skins y cosméticos
+
+SOL RUNNER incluye una estructura preparada para expansión futura.
+
+### Características actuales
+
+- skins
+- inventario cosmético
+- personaje equipado persistente
+- almacenamiento local
+
+### Expansión futura
+
+- skins NFT
+- rarezas
 - marketplace
-- seasonal cosmetics
+- temporadas
 
 ---
 
-# Project Structure
+# Estructura del proyecto
 
 ```text
 SOL-RUNNER/
@@ -362,27 +361,27 @@ SOL-RUNNER/
 
 ---
 
-# Live Demo
+# Demo web
 
 https://sol-runner.onrender.com
 
 ---
 
-# Video Demo
+# Video demo
 
 https://youtu.be/9k9FAtFfYjg
 
 ---
 
-# GitHub Repository
+# Repositorio
 
 https://github.com/Polar2565/SOL-RUNNER
 
 ---
 
-# Installation
+# Instalación
 
-## Clone Repository
+## Clonar repositorio
 
 ```bash
 git clone https://github.com/Polar2565/SOL-RUNNER.git
@@ -390,7 +389,7 @@ git clone https://github.com/Polar2565/SOL-RUNNER.git
 
 ---
 
-## Install Dependencies
+## Instalar dependencias
 
 ### Backend
 
@@ -401,7 +400,7 @@ npm install
 
 ---
 
-## Run Backend
+## Ejecutar backend
 
 ```bash
 npm run dev
@@ -409,21 +408,21 @@ npm run dev
 
 ---
 
-## Run Frontend
+## Ejecutar frontend
 
-Open:
+Abrir:
 
 ```text
 frontend/index.html
 ```
 
-or run using Live Server.
+o ejecutar usando Live Server.
 
 ---
 
-# Environment Variables
+# Variables de entorno
 
-Create a `.env` file inside backend:
+Crear un archivo `.env` dentro de backend:
 
 ```env
 RPC_URL=your_solana_rpc
@@ -433,9 +432,9 @@ PORT=3000
 
 ---
 
-# Backend Endpoints
+# Endpoints backend
 
-## Authentication
+## Autenticación
 
 - POST `/auth/nonce`
 - POST `/auth/verify`
@@ -452,89 +451,89 @@ PORT=3000
 
 ---
 
-# Persistence System
+# Persistencia
 
-The project currently uses:
+Actualmente el proyecto utiliza:
 
 ## localStorage
 
-For:
+Para:
 
 - skins
-- upgrades
-- equipped character
-- local progression
-- player preferences
+- mejoras
+- personaje equipado
+- progreso local
+- preferencias del jugador
 
-## Backend Session Logic
+## Backend
 
-For:
+Para:
 
-- authentication validation
-- reward verification
-- gameplay validation
+- validación de autenticación
+- validación de rewards
+- validación de gameplay
 
 ---
 
-# Current Project Status
+# Estado actual del proyecto
 
-Current status:
+Estado actual:
 
-- Functional MVP
-- Phantom Wallet integration
-- Solana Devnet integration
-- Gameplay prototype
-- Reward flow implementation
-- Backend authentication
-- Live deployment
-- Expanding progression systems
-- Improving balancing
-- NFT scalability preparation
+- MVP funcional
+- integración con Phantom Wallet
+- integración con Solana Devnet
+- gameplay funcional
+- sistema de rewards
+- backend operativo
+- deploy activo
+- mejoras de progresión en desarrollo
+- balanceo en progreso
+- estructura preparada para NFTs
 
 ---
 
 # Roadmap
 
-## Short Term
+## Corto plazo
 
-- gameplay polish
-- balancing
+- mejoras de gameplay
+- balanceo
 - leaderboard
-- improved UI/UX
-- mobile responsiveness
+- mejoras UI/UX
+- responsive móvil
 
-## Mid Term
+## Mediano plazo
 
-- SPL token integration
-- NFT cosmetics
-- ranking system
-- matchmaking improvements
-- seasonal content
+- integración SPL Tokens
+- skins NFT
+- ranking global
+- matchmaking
+- contenido estacional
 
-## Long Term
+## Largo plazo
 
-- multiplayer modes
+- multiplayer
 - marketplace
-- tournaments
-- DAO/community systems
-- Mainnet deployment
+- torneos
+- sistemas comunitarios
+- despliegue Mainnet
 
 ---
 
-# Team
+# Equipo
 
 ## Javier Solís
 
 Founder / CTO / Lead Developer
 
-Responsible for:
+Responsable de:
 
-- architecture
-- frontend development
-- backend development
-- Solana integration
-- gameplay systems
-- deployment
+- arquitectura
+- frontend
+- backend
+- integración Solana
+- gameplay
+- deploy
 
 GitHub:
 
@@ -566,14 +565,14 @@ https://github.com/CashPH
 
 ---
 
-# Vision
+# Visión
 
-SOL RUNNER aims to become a scalable Web3 gaming experience where blockchain integration enhances gameplay instead of replacing it.
+SOL RUNNER busca convertirse en una experiencia Web3 gaming donde blockchain complemente el gameplay en lugar de reemplazarlo.
 
-The goal is to create an accessible entry point into Web3 gaming while maintaining a strong gameplay-first philosophy.
+El objetivo es crear una puerta de entrada accesible al gaming Web3 manteniendo una filosofía enfocada primero en la experiencia del jugador.
 
 ---
 
-# License
+# Licencia
 
-This project is currently under private development and educational/startup incubation use.
+Proyecto actualmente en desarrollo para incubación y crecimiento como startup Web3.
