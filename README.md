@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./frontend/assets/images/sol-runner-logo.png" alt="SOL RUNNER Logo" width="520" />
+  <img src="./frontend/assets/icons/sol-runner-logo.png" alt="SOL RUNNER Logo" width="520" />
 </p>
 
 <h1 align="center">SOL RUNNER</h1>
